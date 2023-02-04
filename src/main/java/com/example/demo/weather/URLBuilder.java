@@ -1,39 +1,48 @@
-import com.example.demo.pojo.*;
+package com.example.demo.weather;
 
-import java.util.HashMap;
 
-public class sideMain {
+import com.example.demo.pojo.URLRequest;
+import com.example.demo.pojo.WeatherHolder;
+import com.example.demo.pojo.WeatherRule;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+
+
+@Service
+public class URLBuilder {
 
     /**
      * GETURL:
-     GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,windSpeed<10,visibility>4&operator=OR
+    GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR
      * requestURL:
      * 'https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6
-     */
+    */
 
-    static final String prefix = "GET/weather-conditions" + "\\?" + "location=";
+    final String prefix = "GET/weather-conditions?location=";
     static final String tomorrowURL = "https://api.tomorrow.io/v4/timelines?";
-    static final String apiKey = "apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6";
-    static String GETURL = "GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,windSpeed<10,rainIntensity>4&operator=OR";
-    static String requestURL = "https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6";
+    final String apiKey = "apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6";
+    final static WeatherHolder weatherHolder = new WeatherHolder();
 
-    static WeatherHolder weatherHolder = new WeatherHolder();
-
-
+    String GETURL = "GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR";
+    URLRequest urlRequest = new URLRequest();
 
 
-    public static void main(String[] args) {
+
+    @GetMapping
+    public void initialize() {
+        System.out.println("URLBuilder");
         extractVariables(GETURL);
-        String correctURL = buildURL(GETURL);
-        System.out.println(correctURL);
+        String url = urlRequest.buildURL(weatherHolder);
+        System.out.println(url);
 
     }
 
-    static void extractVariables(String GETURL){
-        String correctURL = null;
 
-        String urlWithoutPrefix = GETURL.replaceFirst(prefix, "");
+
+    static void extractVariables(String GETURL){
+
+        String urlWithoutPrefix = GETURL.replaceFirst(URLRequest.prefix, "");
         String[] splitGETURL = urlWithoutPrefix.split("&", 3);
 
         handleFirstPartLocations(splitGETURL[0]);
@@ -52,10 +61,6 @@ public class sideMain {
         weatherHolder.setLat(lat);
         weatherHolder.setLen(lon);
 
-    }
-
-    static String buildURL(String fixedLocationsPart){
-        return tomorrowURL + fixedLocationsPart + "&" + "fields=temperature,humidity,windSpeed,rainIntensity&timesteps=1h&units=metric" + "&" + apiKey;
     }
 
 
@@ -107,13 +112,11 @@ public class sideMain {
     private static void handleThirdPart(String s) {
         String[] split = s.split("=");
         String totalOperator = split[1];
-        if (!totalOperator.equals("OR") || !totalOperator.equals("AND")){
+        if (!(totalOperator.equals("OR") || totalOperator.equals("AND"))){
             System.out.println("****400!!!!*****");
         }
         weatherHolder.setTotalOperator(totalOperator);
     }
-
-
 
 
 }

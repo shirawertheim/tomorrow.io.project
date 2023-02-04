@@ -9,21 +9,21 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping()
-public class WeatherController {
+@RequestMapping(path = "/api/v1")
+public class URLController {
 
-    private final WeatherService weatherService;
+    URLBuilder urlBuilder = new URLBuilder();
 
     @Autowired
-    public WeatherController(WeatherService weatherService) {
-        this.weatherService = weatherService;
+    public URLController(URLBuilder urlBuilder) {
+        this.urlBuilder = urlBuilder;
     }
 
     @GetMapping()
-    public List<Object> getStudents() throws IOException {
+    public void getStudents() throws IOException {
 //        return studentService.getStudents();
-        System.out.println("test");
-        return weatherService.test();
+        System.out.println("URLController");
+        urlBuilder.initialize();
     }
 
 
