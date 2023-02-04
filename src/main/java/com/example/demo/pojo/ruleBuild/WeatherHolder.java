@@ -1,12 +1,10 @@
-package com.example.demo.pojo;
+package com.example.demo.pojo.ruleBuild;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Data

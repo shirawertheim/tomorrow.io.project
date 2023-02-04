@@ -1,6 +1,4 @@
-package com.example.demo.pojo;
-
-import lombok.Data;
+package com.example.demo.pojo.ruleBuild;
 
 public class Temperature extends WeatherRule{
 

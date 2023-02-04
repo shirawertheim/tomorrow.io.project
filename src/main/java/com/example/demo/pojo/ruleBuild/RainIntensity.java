@@ -1,4 +1,4 @@
-package com.example.demo.pojo;
+package com.example.demo.pojo.ruleBuild;
 
 public class RainIntensity extends WeatherRule{
 

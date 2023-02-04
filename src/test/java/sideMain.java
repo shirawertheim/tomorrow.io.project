@@ -1,6 +1,5 @@
-import com.example.demo.pojo.*;
-
-import java.util.HashMap;
+import com.example.demo.pojo.ruleBuild.WeatherHolder;
+import com.example.demo.pojo.ruleBuild.WeatherRule;
 
 public class sideMain {
 

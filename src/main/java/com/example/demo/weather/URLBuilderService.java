@@ -1,16 +1,16 @@
 package com.example.demo.weather;
 
 
-import com.example.demo.pojo.URLRequest;
-import com.example.demo.pojo.WeatherHolder;
-import com.example.demo.pojo.WeatherRule;
+import com.example.demo.pojo.ruleBuild.URLRequest;
+import com.example.demo.pojo.ruleBuild.WeatherHolder;
+import com.example.demo.pojo.ruleBuild.WeatherRule;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 
 @Service
-public class URLBuilder {
+public class URLBuilderService {
 
     /**
      * GETURL:
@@ -30,11 +30,12 @@ public class URLBuilder {
 
 
     @GetMapping
-    public void initialize() {
+    public String initialize() {
         System.out.println("URLBuilder");
         extractVariables(GETURL);
         String url = urlRequest.buildURL(weatherHolder);
         System.out.println(url);
+        return url;
 
     }
 

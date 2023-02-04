@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 public class WeatherService {
 
-    /*
+
     @GetMapping
     public List<Weather> getStudents(){
         return List.of(new Weather(	1L,
@@ -110,6 +110,6 @@ public class WeatherService {
         return null;
     }
 
-    */
+
 
 }

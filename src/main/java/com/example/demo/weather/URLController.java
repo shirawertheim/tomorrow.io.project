@@ -2,29 +2,37 @@ package com.example.demo.weather;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1")
+//@RequestMapping(path = "/")
 public class URLController {
 
-    URLBuilder urlBuilder = new URLBuilder();
+    URLBuilderService urlBuilderService = new URLBuilderService();
 
     @Autowired
-    public URLController(URLBuilder urlBuilder) {
-        this.urlBuilder = urlBuilder;
+    public URLController(URLBuilderService urlBuilderService) {
+        this.urlBuilderService = urlBuilderService;
     }
 
-    @GetMapping()
+    @GetMapping("/weather-conditions")
     public void getStudents() throws IOException {
 //        return studentService.getStudents();
         System.out.println("URLController");
-        urlBuilder.initialize();
+        String url = urlBuilderService.initialize();
+        System.out.println("Response Service");
+        ResponseService responseService = new ResponseService();
+        responseService.mainFunc(url);
     }
+
+
+//    @GetMapping("GET/{path}")
+//    public void getPath(@PathVariable String path, HttpServletRequest request) {
+//        String fullPath = request.getRequestURI();
+//        System.out.println("The requested path is: " + fullPath + " and the path variable is: " + path);
+//    }
 
 
 
