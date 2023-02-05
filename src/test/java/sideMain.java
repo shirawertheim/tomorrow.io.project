@@ -1,12 +1,8 @@
-import com.example.demo.pojo.response.ResponseHolder;
-import com.example.demo.pojo.response.Timelines;
-import com.example.demo.pojo.ruleBuild.WeatherHolder;
-import com.example.demo.pojo.ruleBuild.WeatherRule;
+import com.example.demo.pojo.ResponseEntity.ResponseHolder;
+import com.example.demo.pojo.URLEntity.WeatherHolder;
+import com.example.demo.pojo.URLEntity.WeatherRule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
-import org.json.JSONObject;
 
 
 public class sideMain {

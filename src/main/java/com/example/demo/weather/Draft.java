@@ -18,23 +18,21 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Scanner;
 
-
-public class WeatherService {
-
-
-    @GetMapping
-    public List<Weather> getStudents(){
-        return List.of(new Weather(	1L,
-                "Mariam",
-                "mariam.jamal@gmail.com",
-                LocalDate.of(2000, Month.APRIL, 5),
-                21
-        ));
-    }
+public class Draft {
 
 
+//    @GetMapping
+//    public List<Weather> getStudents(){
+//        return List.of(new Weather(	1L,
+//                "Mariam",
+//                "mariam.jamal@gmail.com",
+//                LocalDate.of(2000, Month.APRIL, 5),
+//                21
+//        ));
+//    }
+//
 
-    @GetMapping
+
     public List<Object> getCountry1() {
             String url = "https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6";
             RestTemplate restTemplate = new RestTemplate();

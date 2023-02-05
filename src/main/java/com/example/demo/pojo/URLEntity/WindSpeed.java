@@ -1,4 +1,4 @@
-package com.example.demo.pojo.ruleBuild;
+package com.example.demo.pojo.URLEntity;
 
 public class WindSpeed extends WeatherRule{
 

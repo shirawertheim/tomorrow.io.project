@@ -1,6 +1,4 @@
-package com.example.demo.pojo.ruleBuild;
-
-import lombok.Data;
+package com.example.demo.pojo.URLEntity;
 
 public class WeatherRule {
     String name;

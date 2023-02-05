@@ -1,4 +1,4 @@
-package com.example.demo.weather;
+package com.example.demo.weather.Services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;

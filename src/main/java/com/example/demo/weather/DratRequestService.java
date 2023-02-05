@@ -1,16 +1,16 @@
 package com.example.demo.weather;
 
 
-import com.example.demo.pojo.ruleBuild.URLRequest;
-import com.example.demo.pojo.ruleBuild.WeatherHolder;
-import com.example.demo.pojo.ruleBuild.WeatherRule;
+import com.example.demo.pojo.URLEntity.URLRequest;
+import com.example.demo.pojo.URLEntity.WeatherHolder;
+import com.example.demo.pojo.URLEntity.WeatherRule;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 
 @Service
-public class URLBuilderService {
+public class DratRequestService {
 
     /**
      * GETURL:

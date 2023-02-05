@@ -1,4 +1,4 @@
-package com.example.demo.pojo.response;
+package com.example.demo.pojo.ResponseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
