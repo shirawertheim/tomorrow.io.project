@@ -1,6 +1,5 @@
-package com.example.demo.pojo.ResponseEntity;
+package com.example.demo.pojo.ResponseAPIEntity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

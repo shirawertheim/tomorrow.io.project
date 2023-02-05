@@ -1,8 +1,9 @@
-package com.example.demo.pojo.RequestEntity;
+package com.example.demo.pojo.RequestEntity.SubRules;
 
+import com.example.demo.pojo.RequestEntity.WeatherRule;
 import lombok.AllArgsConstructor;
 
-public class Temperature extends WeatherRule{
+public class Temperature extends WeatherRule {
 
     public Temperature(){
         this.name = "temperature";

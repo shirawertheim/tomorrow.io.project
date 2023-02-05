@@ -1,11 +1,18 @@
+import com.example.demo.pojo.FinalResponseEntity.DataEntity;
+import com.example.demo.pojo.FinalResponseEntity.FinalResponseEntity;
+import com.example.demo.pojo.FinalResponseEntity.FinalTimeline;
 import com.example.demo.pojo.RequestEntity.*;
-import com.example.demo.pojo.ResponseEntity.Intervals;
-import com.example.demo.pojo.ResponseEntity.ResponseHolder;
-import com.example.demo.pojo.ResponseEntity.Timelines;
+import com.example.demo.pojo.RequestEntity.SubRules.RainIntensity;
+import com.example.demo.pojo.RequestEntity.SubRules.Temperature;
+import com.example.demo.pojo.RequestEntity.SubRules.WindSpeed;
+import com.example.demo.pojo.ResponseAPIEntity.Intervals;
+import com.example.demo.pojo.ResponseAPIEntity.ResponseHolder;
+import com.example.demo.pojo.ResponseAPIEntity.Timelines;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -20,8 +27,90 @@ public class sideMainResponse {
 
         WeatherHolder weatherHolder = initializeWeatherHolder();
         ResponseHolder responseHolder = createPOJO();
-        System.out.println(responseHolder);
         updateDates(responseHolder);
+        FinalResponseEntity finalResponseEntity = createResponse(responseHolder, weatherHolder);
+        System.out.println(finalResponseEntity);
+
+
+
+
+
+    }
+
+
+    private static FinalResponseEntity createResponse(ResponseHolder responseHolder, WeatherHolder weatherHolder) {
+        FinalResponseEntity finalResponseEntity = new FinalResponseEntity();
+        DataEntity dataEntity = finalResponseEntity.getDataEntity();
+        for (Timelines timelines :
+                responseHolder.getData().getTimelines()) {
+
+            String firstStartTime = null;
+            String currStartTime;
+            String currEndTime;
+            boolean currRule;
+            boolean prevRule = false;
+            boolean firstInterval = true;
+            for(Intervals interval : timelines.getIntervals()){
+
+                currStartTime = interval.getStartTime();
+                currEndTime = interval.getEndTime();
+
+                if (firstInterval){ //first time initialized
+                    firstStartTime = currStartTime;
+                    prevRule = legalRuleFunc(weatherHolder, interval);
+                    firstInterval = false;
+                    continue;
+                }
+
+                currRule = legalRuleFunc(weatherHolder, interval);
+
+                if (prevRule!=currRule){
+                    dataEntity.getFinalTimelineList().add(new FinalTimeline(firstStartTime, currEndTime, currRule));
+                    firstStartTime = currStartTime;
+                }
+
+                prevRule = currRule;
+            }
+            if (timelines.getIntervals().size()==1){
+                Intervals interval = timelines.getIntervals().get(0);
+                dataEntity.getFinalTimelineList().add(new FinalTimeline(interval.getStartTime(), interval.getEndTime(), legalRuleFunc(weatherHolder, interval)));
+            }
+            finalResponseEntity.setDataEntity(dataEntity);
+        }
+
+        return finalResponseEntity;
+
+    }
+
+
+
+
+    private static boolean legalRuleFunc(WeatherHolder weatherHolder, Intervals interval) {
+        String totalOperator = weatherHolder.getTotalOperator();
+        if (totalOperator.equals("OR")){
+            return checkORLLegality(weatherHolder, interval);
+        }
+        else{
+            return checkANDELegality(weatherHolder, interval);
+        }
+    }
+
+    private static boolean checkANDELegality(WeatherHolder weatherHolder, Intervals interval) {
+        for (WeatherRule weatherRule : weatherHolder.getSet()){
+            long value = interval.getValues().getValuesMap().get(weatherRule.getName());
+            if (!weatherRule.isLegal(value))
+                return false;
+        }
+        return true;
+    }
+
+    private static boolean checkORLLegality(WeatherHolder weatherHolder, Intervals interval) {
+        for (WeatherRule weatherRule : weatherHolder.getSet()){
+            long value = interval.getValues().getValuesMap().get(weatherRule.getName());
+            if (weatherRule.isLegal(value))
+                return true;
+        }
+        return false;
     }
 
     private static void updateDates(ResponseHolder responseHolder) {
@@ -30,6 +119,7 @@ public class sideMainResponse {
                 timelines.updateDate();
             for(Intervals interval : timelines.getIntervals()){
                 interval.updateDate();
+                interval.getValues().updateValuesMap();
             }
         }
 

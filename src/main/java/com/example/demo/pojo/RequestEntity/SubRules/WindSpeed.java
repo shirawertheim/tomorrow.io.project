@@ -1,6 +1,8 @@
-package com.example.demo.pojo.RequestEntity;
+package com.example.demo.pojo.RequestEntity.SubRules;
 
-public class WindSpeed extends WeatherRule{
+import com.example.demo.pojo.RequestEntity.WeatherRule;
+
+public class WindSpeed extends WeatherRule {
 
     public WindSpeed(){
         this.name = "windSpeed";

@@ -1,9 +1,10 @@
-package com.example.demo.pojo.RequestEntity;
+package com.example.demo.pojo.RequestEntity.SubRules;
 
+import com.example.demo.pojo.RequestEntity.WeatherRule;
 import lombok.Data;
 
 @Data
-public class Humidity extends WeatherRule{
+public class Humidity extends WeatherRule {
 
     public Humidity(){
         this.name = "humidity";

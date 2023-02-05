@@ -1,4 +1,4 @@
-package com.example.demo.pojo.ResponseEntity;
+package com.example.demo.pojo.ResponseAPIEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

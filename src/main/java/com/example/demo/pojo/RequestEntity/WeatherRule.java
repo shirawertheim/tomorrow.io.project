@@ -1,10 +1,13 @@
 package com.example.demo.pojo.RequestEntity;
 
+import lombok.Data;
+
+@Data
 public class WeatherRule {
-    String name;
-    boolean exists;
-    String operator;;
-    int value;
+    protected String name;
+    protected boolean exists;
+    protected String operator;;
+    protected long value;
 
 
     public WeatherRule() {
@@ -21,12 +24,12 @@ public class WeatherRule {
         this.value = value;
     }
 
-    public boolean isLegal(int input){
+    public boolean isLegal(long input){
         if (this.operator.equals(">")){
-            return value>input;
+            return input>value;
         }
         else if (this.operator.equals("<")){
-            return value<input;
+            return input<value;
         }
         return false;
     }

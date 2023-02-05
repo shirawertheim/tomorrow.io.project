@@ -1,6 +1,10 @@
 package com.example.demo.pojo.RequestEntity;
 
 
+import com.example.demo.pojo.RequestEntity.SubRules.Humidity;
+import com.example.demo.pojo.RequestEntity.SubRules.RainIntensity;
+import com.example.demo.pojo.RequestEntity.SubRules.Temperature;
+import com.example.demo.pojo.RequestEntity.SubRules.WindSpeed;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
