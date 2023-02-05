@@ -1,12 +1,14 @@
 package com.example.demo.weather.Services;
 
 
+import com.example.demo.pojo.RequestEntity.RequestEntity;
 import com.example.demo.pojo.RequestEntity.URLRequest;
 import com.example.demo.pojo.RequestEntity.WeatherHolder;
 import com.example.demo.pojo.RequestEntity.WeatherRule;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -34,7 +36,7 @@ public class RequestService {
      * @return
      */
     @GetMapping
-    public String initialize(Map<String, String> queryParams) {
+    public RequestEntity initialize(Map<String, String> queryParams) {
 
         System.out.println("***RequestService started***");
 
@@ -50,10 +52,10 @@ public class RequestService {
         handleSecondPart(rule);
         handleThirdPart(operator);
 
-
         String url = urlRequest.buildURL(weatherHolder);
+        RequestEntity requestEntity = new RequestEntity(url, weatherHolder);
         System.out.println("URL: " + url);
-        return url;
+        return requestEntity;
     }
 
 

@@ -1,8 +1,12 @@
-import com.example.demo.pojo.RequestEntity.WeatherHolder;
-import com.example.demo.pojo.RequestEntity.WeatherRule;
+import com.example.demo.pojo.RequestEntity.*;
+import com.example.demo.pojo.ResponseEntity.Intervals;
 import com.example.demo.pojo.ResponseEntity.ResponseHolder;
+import com.example.demo.pojo.ResponseEntity.Timelines;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class sideMainResponse {
@@ -14,20 +18,51 @@ public class sideMainResponse {
 
     public static void main(String[] args) {
 
-
-        createPOJO();
+        WeatherHolder weatherHolder = initializeWeatherHolder();
+        ResponseHolder responseHolder = createPOJO();
+        System.out.println(responseHolder);
+        updateDates(responseHolder);
     }
 
-    public static void createPOJO()  {
+    private static void updateDates(ResponseHolder responseHolder) {
+        for (Timelines timelines :
+                responseHolder.getData().getTimelines()) {
+                timelines.updateDate();
+            for(Intervals interval : timelines.getIntervals()){
+                interval.updateDate();
+            }
+        }
+
+    }
+
+    private static WeatherHolder initializeWeatherHolder() {
+        WeatherHolder weatherHolder = new WeatherHolder();
+        weatherHolder.setLat("40.7");
+        weatherHolder.setLen("-73.9");
+        Temperature temperature = new Temperature(true, ">", 30);
+        WindSpeed windSpeed = new WindSpeed(true, "<", 10);
+        RainIntensity rainIntensity = new RainIntensity(true, ">", 4);
+        Set<WeatherRule> weatherRuleSet = new HashSet<>();
+        weatherRuleSet.add(temperature);
+        weatherRuleSet.add(windSpeed);
+        weatherRuleSet.add(rainIntensity);
+        weatherHolder.setSet(weatherRuleSet);
+        weatherHolder.setTotalOperator("OR");
+        return weatherHolder;
+    }
+
+    public static ResponseHolder createPOJO()  {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             ResponseHolder res = objectMapper.readValue(JsonInput1, ResponseHolder.class);
             System.out.println(res);
+            return res;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+
 
 
 

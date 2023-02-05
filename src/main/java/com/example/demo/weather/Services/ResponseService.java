@@ -1,5 +1,6 @@
 package com.example.demo.weather.Services;
 
+import com.example.demo.pojo.RequestEntity.RequestEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,8 @@ import java.util.stream.Collectors;
 public class ResponseService {
 
 
-    public void initialize(String request){
-        InputStream inputStream = sendRequest(request);
+    public void initialize(RequestEntity requestEntity){
+        InputStream inputStream = sendRequest(requestEntity.getUrl());
         String response = convertInputStreamToString(inputStream);
         Map<String, Object> WW = createJSON(inputStream);
     }

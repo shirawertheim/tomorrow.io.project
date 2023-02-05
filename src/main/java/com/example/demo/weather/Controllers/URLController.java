@@ -1,5 +1,7 @@
 package com.example.demo.weather.Controllers;
 
+import com.example.demo.pojo.RequestEntity.RequestEntity;
+import com.example.demo.pojo.RequestEntity.WeatherRule;
 import com.example.demo.weather.Services.RequestService;
 import com.example.demo.weather.Services.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,8 @@ public class URLController {
     public void handleURL(@RequestParam Map<String, String> queryParams) throws IOException {
 
 
-        String request = requestService.initialize(queryParams);
-        responseService.initialize(request);
+        RequestEntity requestEntity = requestService.initialize(queryParams);
+        responseService.initialize(requestEntity);
 
 
 

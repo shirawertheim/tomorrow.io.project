@@ -20,4 +20,14 @@ public class WeatherRule {
         this.operator = operator;
         this.value = value;
     }
+
+    public boolean isLegal(int input){
+        if (this.operator.equals(">")){
+            return value>input;
+        }
+        else if (this.operator.equals("<")){
+            return value<input;
+        }
+        return false;
+    }
 }
