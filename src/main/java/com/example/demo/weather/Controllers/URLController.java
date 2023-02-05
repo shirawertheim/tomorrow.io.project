@@ -1,6 +1,7 @@
 package com.example.demo.weather.Controllers;
 
 import com.example.demo.weather.Services.RequestService;
+import com.example.demo.weather.Services.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,26 +12,21 @@ import java.util.Map;
 //@RequestMapping()
 public class URLController {
 
-    RequestService requestService = new RequestService();
+    RequestService requestService;
+    ResponseService responseService;
 
     @Autowired
-    public URLController(RequestService requestService) {
+    public URLController(RequestService requestService, ResponseService responseService) {
         this.requestService = requestService;
+        this.responseService = responseService;
     }
 
     @GetMapping("weather-conditions")
     public void handleURL(@RequestParam Map<String, String> queryParams) throws IOException {
 
 
-//
-//        String location = queryParams.get("location");
-//        String rule = queryParams.get("rule");
-//        String operator = queryParams.get("operator");
-//        System.out.println("location: " + location);
-//        System.out.println("rule: " + rule);
-//        System.out.println("operator: " + operator);
-
-        requestService.initialize(queryParams);
+        String request = requestService.initialize(queryParams);
+        responseService.initialize(request);
 
 
 

@@ -1,9 +1,9 @@
 package com.example.demo.weather;
 
 
-import com.example.demo.pojo.URLEntity.URLRequest;
-import com.example.demo.pojo.URLEntity.WeatherHolder;
-import com.example.demo.pojo.URLEntity.WeatherRule;
+import com.example.demo.pojo.RequestEntity.URLRequest;
+import com.example.demo.pojo.RequestEntity.WeatherHolder;
+import com.example.demo.pojo.RequestEntity.WeatherRule;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 

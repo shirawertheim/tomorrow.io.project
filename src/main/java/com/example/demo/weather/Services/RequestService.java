@@ -1,9 +1,9 @@
 package com.example.demo.weather.Services;
 
 
-import com.example.demo.pojo.URLEntity.URLRequest;
-import com.example.demo.pojo.URLEntity.WeatherHolder;
-import com.example.demo.pojo.URLEntity.WeatherRule;
+import com.example.demo.pojo.RequestEntity.URLRequest;
+import com.example.demo.pojo.RequestEntity.WeatherHolder;
+import com.example.demo.pojo.RequestEntity.WeatherRule;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -18,26 +18,25 @@ public class RequestService {
 
     /**
      * GETURL:
-    GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR
+        GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR
+
      * requestURL:
      * 'https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6
     */
 
-    final String prefix = "GET/weather-conditions?location=";
-    static final String tomorrowURL = "https://api.tomorrow.io/v4/timelines?";
-    final String apiKey = "apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6";
     final static WeatherHolder weatherHolder = new WeatherHolder();
-
-    String GETURL = "GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR";
     URLRequest urlRequest = new URLRequest();
 
 
-
-
+    /**
+     * main service, build weather-holder object that saves all the relevant data in order to build a legal URL
+     * @param queryParams
+     * @return
+     */
     @GetMapping
     public String initialize(Map<String, String> queryParams) {
 
-        System.out.println("RequestService started");
+        System.out.println("***RequestService started***");
 
         String location = queryParams.get("location");
         String rule = queryParams.get("rule");
@@ -52,30 +51,16 @@ public class RequestService {
         handleThirdPart(operator);
 
 
-
-//        extractVariables(GETURL);
-
         String url = urlRequest.buildURL(weatherHolder);
         System.out.println("URL: " + url);
         return url;
-
     }
 
 
-
-    static void extractVariables(String GETURL){
-
-        String urlWithoutPrefix = GETURL.replaceFirst(URLRequest.prefix, "");
-        String[] splitGETURL = urlWithoutPrefix.split("&", 3);
-
-        handleFirstPartLocations(splitGETURL[0]);
-        handleSecondPart(splitGETURL[1]);
-        handleThirdPart(splitGETURL[2]);
-
-        System.out.println("hiiiii");
-
-    }
-
+    /**
+     * initialize location part, throw exception if not legal
+     * @param s
+     */
     private static void handleFirstPartLocations(String s) {
         String[] location = s.split(",");
         String lat = location[0];
@@ -88,7 +73,10 @@ public class RequestService {
 
 
 
-
+    /**
+     * initialize rules part, throw exception if not legal
+     * @param s
+     */
     private static String handleSecondPart(String s) {
 
         String[] rules = s.split(",");
@@ -109,6 +97,11 @@ public class RequestService {
         return null;
     }
 
+    /**
+     * helper function, check operator eqaals ">" or "<"
+     * @param rule
+     * @return
+     */
     private static String operatorInitializer(String rule) {
         String ruleOperator = null;
         if (rule.contains(">")){
@@ -123,6 +116,10 @@ public class RequestService {
         return ruleOperator;
     }
 
+    /**
+     * initialize OPERATOR part, throw exception if not legal
+     * @param s
+     */
     private static void handleThirdPart(String s) {
         if (s.equals("OR") || s.equals("AND")){
             weatherHolder.setTotalOperator(s);

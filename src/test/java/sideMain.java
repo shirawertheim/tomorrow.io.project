@@ -1,6 +1,6 @@
 import com.example.demo.pojo.ResponseEntity.ResponseHolder;
-import com.example.demo.pojo.URLEntity.WeatherHolder;
-import com.example.demo.pojo.URLEntity.WeatherRule;
+import com.example.demo.pojo.RequestEntity.WeatherHolder;
+import com.example.demo.pojo.RequestEntity.WeatherRule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

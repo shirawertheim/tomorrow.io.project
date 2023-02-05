@@ -4,21 +4,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ResponseService {
 
 
-    public void mainFunc(String url){
-        InputStream inputStream = sendRequest(url);
-        Map<String, Object> jsonMap = createJSON(inputStream);
+    public void initialize(String request){
+        InputStream inputStream = sendRequest(request);
+        String response = convertInputStreamToString(inputStream);
+        Map<String, Object> WW = createJSON(inputStream);
     }
 
 
@@ -38,6 +40,14 @@ public class ResponseService {
             throw new RuntimeException(e);
         }
 
+    }
+
+    String convertInputStreamToString(InputStream inputStream){
+        String text = new BufferedReader(
+                new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+        return text;
     }
 
     public Map<String, Object> createJSON(InputStream inputStream){

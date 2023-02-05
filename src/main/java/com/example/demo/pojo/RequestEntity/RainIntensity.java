@@ -1,4 +1,4 @@
-package com.example.demo.pojo.URLEntity;
+package com.example.demo.pojo.RequestEntity;
 
 public class RainIntensity extends WeatherRule{
 
