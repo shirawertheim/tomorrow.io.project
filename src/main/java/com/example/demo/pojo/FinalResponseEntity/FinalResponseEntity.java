@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FinalResponseEntity {
     private String status = "success";
-    private DataEntity dataEntity;
+    private data data = new data();
 }

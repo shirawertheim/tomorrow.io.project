@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FinalTimeline {
-    String startTime;
-    String endTime;
-    boolean condition_met;
+public class data {
+    List<FinalTimeLines> timelines;
 }
