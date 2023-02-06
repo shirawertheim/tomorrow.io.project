@@ -11,10 +11,5 @@ public class RainIntensity extends WeatherCondition {
         super("rainIntensity", exists, operator, value);
     }
 
-//    public RainIntensity(String operator, boolean exists, int value)
-//    {
-//        super(exists, operator, value);
-//        name = ruleName;
-//    }
 
 }

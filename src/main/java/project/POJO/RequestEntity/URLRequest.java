@@ -20,7 +20,12 @@ public class URLRequest {
 
 
     public String buildURL(WeatherHolder weatherHolder){
-        return tomorrowURL + weatherHolder.getLat() + "," + weatherHolder.getLen() + "&" + fields + "&" + timesteps + "&" + units + "&" + apiKey;
+        return tomorrowURL +
+                weatherHolder.getLat() + "," + weatherHolder.getLen() + "&" +
+                fields + "&" +
+                timesteps + "&" +
+                units + "&" +
+                apiKey;
     }
 
 }

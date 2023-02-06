@@ -1,24 +1,29 @@
 package project.Services;
 
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import project.POJO.LoggerHelper;
-import project.POJO.ExceptionEntity.Types.BadRequestException;
-import project.POJO.RequestEntity.RequestEntity;
-import project.POJO.RequestEntity.URLRequest;
-import project.POJO.RequestEntity.WeatherHolder;
-import project.POJO.RequestEntity.WeatherCondition;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import project.propertyPackage.DataSourceConfig;
-
+import project.POJO.ExceptionEntity.Types.BadRequestException;
+import project.POJO.LoggerHelper;
+import project.POJO.RequestEntity.RequestEntity;
+import project.POJO.RequestEntity.URLRequest;
+import project.POJO.RequestEntity.WeatherCondition;
+import project.POJO.RequestEntity.WeatherHolder;
 import java.util.Map;
+
+/**
+ * GETURL example:
+ GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR
+
+ * requestURL example:
+ * 'https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6
+ */
 
 
 @Service
@@ -36,7 +41,12 @@ public class RequestService implements InitializingBean {
     }
 
     private static URLRequest urlRequest;
+    final static WeatherHolder weatherHolder = new WeatherHolder();
+    private Logger logger = LoggerHelper.logger;
 
+    /**
+     * initialize URLRequest object from application.properties fille
+     */
     private void setDatabaseConfig() {
         urlRequest = new URLRequest();
         urlRequest.setPrefix(env.getProperty("url.prefix"));
@@ -45,23 +55,7 @@ public class RequestService implements InitializingBean {
         urlRequest.setFields(env.getProperty("url.fields"));
         urlRequest.setTimesteps(env.getProperty("url.timesteps"));
         urlRequest.setUnits(env.getProperty("url.units"));
-        System.out.println(urlRequest.toString());
     }
-
-
-    /**
-     * GETURL:
-        GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR
-
-     * requestURL:
-     * 'https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6
-    */
-
-    final static WeatherHolder weatherHolder = new WeatherHolder();
-    private Logger logger = LoggerHelper.logger;
-
-//    @Value("${application.properties.apiKey}")
-//    private String apiKey;
 
 
 
@@ -116,8 +110,6 @@ public class RequestService implements InitializingBean {
         catch (Exception e){
             throw new BadRequestException("Invalid operator provided, please use lat,lon structure");
         }
-
-
     }
 
 
@@ -135,13 +127,11 @@ public class RequestService implements InitializingBean {
             String[] currRule = rule.split(ruleOperator);
             int value =  Integer.valueOf(currRule[1]);
             String ruleName = currRule[0];
-            int counter = 0;
             boolean exists = weatherHolder.getRuleNames().contains(ruleName);
             if (exists){
                 WeatherCondition weatherCondition = new WeatherCondition(ruleName, true, ruleOperator, value);
-                weatherHolder.getSet().add(weatherCondition); //todo check if added
+                weatherHolder.getSet().add(weatherCondition);
             }
-            weatherHolder.setTotalRules(counter);
         }
         return null;
     }

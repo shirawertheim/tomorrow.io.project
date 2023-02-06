@@ -7,12 +7,10 @@ import project.Services.ResponseHandlerService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.Map;
 
 @RestController
-//@RequestMapping()
 public class URLController {
 
     RequestService requestService;

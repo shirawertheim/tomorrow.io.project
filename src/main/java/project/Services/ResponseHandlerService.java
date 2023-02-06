@@ -31,7 +31,6 @@ public class ResponseHandlerService {
         ResponseBuilderService responseBuilderService = new ResponseBuilderService();
         responseBuilderService.updateDates(responseHolder);
         FinalResponseEntity finalResponseEntity = responseBuilderService.createResponse(responseHolder, requestEntity.getWeatherHolder());
-        System.out.println(finalResponseEntity);
 
         String finalResponse = convertObjectToJSON(finalResponseEntity);
         return finalResponse;

@@ -18,7 +18,6 @@ public class WeatherHolder {
 
     private Set<WeatherCondition> set= new HashSet<>();
     private Set<String> ruleNames = new HashSet<>();
-    public int totalRules=0;
     private String totalOperator;
     private String lat;
     private String len;
