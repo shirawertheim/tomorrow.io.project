@@ -1,6 +1,12 @@
 package project.Services;
 
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import project.POJO.LoggerHelper;
 import project.POJO.ExceptionEntity.Types.BadRequestException;
 import project.POJO.RequestEntity.RequestEntity;
@@ -10,14 +16,37 @@ import project.POJO.RequestEntity.WeatherCondition;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import project.propertyPackage.DataSourceConfig;
 
 import java.util.Map;
 
 
 @Service
-public class RequestService {
+@Configuration
+@PropertySource("application.properties")
+public class RequestService implements InitializingBean {
 
 
+    @Autowired
+    Environment env;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        setDatabaseConfig();
+    }
+
+    private static URLRequest urlRequest;
+
+    private void setDatabaseConfig() {
+        urlRequest = new URLRequest();
+        urlRequest.setPrefix(env.getProperty("url.prefix"));
+        urlRequest.setTomorrowURL(env.getProperty("url.tomorrowURL"));
+        urlRequest.setApiKey(env.getProperty("url.apiKey"));
+        urlRequest.setFields(env.getProperty("url.fields"));
+        urlRequest.setTimesteps(env.getProperty("url.timesteps"));
+        urlRequest.setUnits(env.getProperty("url.units"));
+        System.out.println(urlRequest.toString());
+    }
 
 
     /**
@@ -29,9 +58,10 @@ public class RequestService {
     */
 
     final static WeatherHolder weatherHolder = new WeatherHolder();
-    URLRequest urlRequest = new URLRequest();
-
     private Logger logger = LoggerHelper.logger;
+
+//    @Value("${application.properties.apiKey}")
+//    private String apiKey;
 
 
 
@@ -44,6 +74,11 @@ public class RequestService {
     public RequestEntity initialize(Map<String, String> queryParams) {
 
         logger.info("*** RequestService ***");
+        try {
+            afterPropertiesSet();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         String location = queryParams.get("location");
         String rule = queryParams.get("rule");
