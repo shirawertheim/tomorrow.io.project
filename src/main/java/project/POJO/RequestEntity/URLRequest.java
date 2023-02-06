@@ -2,7 +2,6 @@ package project.POJO.RequestEntity;
 
 import lombok.Data;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 @Data
 @Setter

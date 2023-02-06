@@ -1,7 +1,6 @@
 package project.POJO.RequestEntity;
 
 
-import org.springframework.beans.factory.annotation.Value;
 import project.POJO.RequestEntity.SubRules.Humidity;
 import project.POJO.RequestEntity.SubRules.RainIntensity;
 import project.POJO.RequestEntity.SubRules.Temperature;

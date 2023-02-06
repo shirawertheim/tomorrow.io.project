@@ -15,6 +15,7 @@ import project.POJO.RequestEntity.RequestEntity;
 import project.POJO.RequestEntity.URLRequest;
 import project.POJO.RequestEntity.WeatherCondition;
 import project.POJO.RequestEntity.WeatherHolder;
+
 import java.util.Map;
 
 /**
