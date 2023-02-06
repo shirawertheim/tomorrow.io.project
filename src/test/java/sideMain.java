@@ -1,6 +1,7 @@
-import com.example.demo.pojo.ResponseAPIEntity.ResponseHolder;
-import com.example.demo.pojo.RequestEntity.WeatherHolder;
-import com.example.demo.pojo.RequestEntity.WeatherRule;
+import com.example.demo.POJO.ExceptionEntity.Types.BadRequestException;
+import com.example.demo.POJO.ResponseAPIEntity.ResponseHolder;
+import com.example.demo.POJO.RequestEntity.WeatherHolder;
+import com.example.demo.POJO.RequestEntity.WeatherCondition;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -98,8 +99,7 @@ public class sideMain {
     private static String handleSecondPart(String s) {
 
         if (!s.startsWith("rule=")){
-            System.out.println("***400!!!!***");
-            return null;
+            throw new BadRequestException("Invalid expression, please use 'rule'");
         }
 
         s = s.replaceFirst("rule=", "");
@@ -114,8 +114,8 @@ public class sideMain {
             int counter = 0;
             boolean exists = weatherHolder.getRuleNames().contains(ruleName);
             if (exists){
-                WeatherRule weatherRule = new WeatherRule(ruleName, true, ruleOperator, value);
-                weatherHolder.getSet().add(weatherRule); //todo check if added
+                WeatherCondition weatherCondition = new WeatherCondition(ruleName, true, ruleOperator, value);
+                weatherHolder.getSet().add(weatherCondition); //todo check if added
             }
             weatherHolder.setTotalRules(counter);
         }

@@ -1,13 +1,13 @@
-import com.example.demo.pojo.FinalResponseEntity.data;
-import com.example.demo.pojo.FinalResponseEntity.FinalResponseEntity;
-import com.example.demo.pojo.FinalResponseEntity.FinalTimeLines;
-import com.example.demo.pojo.RequestEntity.*;
-import com.example.demo.pojo.RequestEntity.SubRules.RainIntensity;
-import com.example.demo.pojo.RequestEntity.SubRules.Temperature;
-import com.example.demo.pojo.RequestEntity.SubRules.WindSpeed;
-import com.example.demo.pojo.ResponseAPIEntity.Intervals;
-import com.example.demo.pojo.ResponseAPIEntity.ResponseHolder;
-import com.example.demo.pojo.ResponseAPIEntity.Timelines;
+import com.example.demo.POJO.FinalResponseEntity.data;
+import com.example.demo.POJO.FinalResponseEntity.FinalResponseEntity;
+import com.example.demo.POJO.FinalResponseEntity.FinalTimeLines;
+import com.example.demo.POJO.RequestEntity.*;
+import com.example.demo.POJO.RequestEntity.SubRules.RainIntensity;
+import com.example.demo.POJO.RequestEntity.SubRules.Temperature;
+import com.example.demo.POJO.RequestEntity.SubRules.WindSpeed;
+import com.example.demo.POJO.ResponseAPIEntity.Intervals;
+import com.example.demo.POJO.ResponseAPIEntity.ResponseHolder;
+import com.example.demo.POJO.ResponseAPIEntity.Timelines;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -121,20 +121,20 @@ public class sideMainResponse {
     }
 
     private static boolean checkANDELegality(WeatherHolder weatherHolder, Intervals interval) {
-        for (WeatherRule weatherRule : weatherHolder.getSet()){
-            String weatherRuleName = weatherRule.getName();
+        for (WeatherCondition weatherCondition : weatherHolder.getSet()){
+            String weatherRuleName = weatherCondition.getName();
             long value = interval.getValues().getValuesMap().get(weatherRuleName);
-            if (!weatherRule.isLegal(value))
+            if (!weatherCondition.isLegal(value))
                 return false;
         }
         return true;
     }
 
     private static boolean checkORLLegality(WeatherHolder weatherHolder, Intervals interval) {
-        for (WeatherRule weatherRule : weatherHolder.getSet()){
-            String weatherRuleName = weatherRule.getName();
+        for (WeatherCondition weatherCondition : weatherHolder.getSet()){
+            String weatherRuleName = weatherCondition.getName();
             long value = interval.getValues().getValuesMap().get(weatherRuleName);
-            if (weatherRule.isLegal(value))
+            if (weatherCondition.isLegal(value))
                 return true;
         }
         return false;
@@ -159,11 +159,11 @@ public class sideMainResponse {
         Temperature temperature = new Temperature(true, ">", 30);
         WindSpeed windSpeed = new WindSpeed(true, "<", 3);
         RainIntensity rainIntensity = new RainIntensity(true, ">", 4);
-        Set<WeatherRule> weatherRuleSet = new HashSet<>();
-        weatherRuleSet.add(temperature);
-        weatherRuleSet.add(windSpeed);
-        weatherRuleSet.add(rainIntensity);
-        weatherHolder.setSet(weatherRuleSet);
+        Set<WeatherCondition> weatherConditionSet = new HashSet<>();
+        weatherConditionSet.add(temperature);
+        weatherConditionSet.add(windSpeed);
+        weatherConditionSet.add(rainIntensity);
+        weatherHolder.setSet(weatherConditionSet);
         weatherHolder.setTotalOperator("OR");
         return weatherHolder;
     }
