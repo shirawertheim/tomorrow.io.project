@@ -1,7 +1,7 @@
-import com.example.demo.POJO.ExceptionEntity.Types.BadRequestException;
-import com.example.demo.POJO.ResponseAPIEntity.ResponseHolder;
-import com.example.demo.POJO.RequestEntity.WeatherHolder;
-import com.example.demo.POJO.RequestEntity.WeatherCondition;
+import project.POJO.ExceptionEntity.Types.BadRequestException;
+import project.POJO.ResponseAPIEntity.ResponseHolder;
+import project.POJO.RequestEntity.WeatherHolder;
+import project.POJO.RequestEntity.WeatherCondition;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

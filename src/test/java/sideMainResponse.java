@@ -1,13 +1,14 @@
-import com.example.demo.POJO.FinalResponseEntity.data;
-import com.example.demo.POJO.FinalResponseEntity.FinalResponseEntity;
-import com.example.demo.POJO.FinalResponseEntity.FinalTimeLines;
-import com.example.demo.POJO.RequestEntity.*;
-import com.example.demo.POJO.RequestEntity.SubRules.RainIntensity;
-import com.example.demo.POJO.RequestEntity.SubRules.Temperature;
-import com.example.demo.POJO.RequestEntity.SubRules.WindSpeed;
-import com.example.demo.POJO.ResponseAPIEntity.Intervals;
-import com.example.demo.POJO.ResponseAPIEntity.ResponseHolder;
-import com.example.demo.POJO.ResponseAPIEntity.Timelines;
+import project.POJO.FinalResponseEntity.data;
+import project.POJO.FinalResponseEntity.FinalResponseEntity;
+import project.POJO.FinalResponseEntity.FinalTimeLines;
+import project.POJO.RequestEntity.WeatherCondition;
+import project.POJO.RequestEntity.WeatherHolder;
+import project.POJO.RequestEntity.SubRules.RainIntensity;
+import project.POJO.RequestEntity.SubRules.Temperature;
+import project.POJO.RequestEntity.SubRules.WindSpeed;
+import project.POJO.ResponseAPIEntity.Intervals;
+import project.POJO.ResponseAPIEntity.ResponseHolder;
+import project.POJO.ResponseAPIEntity.Timelines;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
