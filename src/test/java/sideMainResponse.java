@@ -39,6 +39,10 @@ public class sideMainResponse {
 
     }
 
+    /**
+     * convert the FinalResponseEntity to JSON
+     * @param finalResponseEntity
+     */
     private static void convertObjectToJSON(FinalResponseEntity finalResponseEntity) {
         ObjectMapper mapper = new ObjectMapper();
         //Converting the Object to JSONString

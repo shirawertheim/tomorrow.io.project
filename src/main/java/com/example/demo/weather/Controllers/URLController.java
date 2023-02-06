@@ -1,9 +1,8 @@
 package com.example.demo.weather.Controllers;
 
 import com.example.demo.pojo.RequestEntity.RequestEntity;
-import com.example.demo.pojo.RequestEntity.WeatherRule;
 import com.example.demo.weather.Services.RequestService;
-import com.example.demo.weather.Services.ResponseService;
+import com.example.demo.weather.Services.ResponseHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,21 +14,21 @@ import java.util.Map;
 public class URLController {
 
     RequestService requestService;
-    ResponseService responseService;
+    ResponseHandlerService responseHandlerService;
 
     @Autowired
-    public URLController(RequestService requestService, ResponseService responseService) {
+    public URLController(RequestService requestService, ResponseHandlerService responseHandlerService) {
         this.requestService = requestService;
-        this.responseService = responseService;
+        this.responseHandlerService = responseHandlerService;
     }
 
     @GetMapping("weather-conditions")
-    public void handleURL(@RequestParam Map<String, String> queryParams) throws IOException {
+    public String handleURL(@RequestParam Map<String, String> queryParams) throws IOException {
 
 
         RequestEntity requestEntity = requestService.initialize(queryParams);
-        responseService.initialize(requestEntity);
-
+        String response = responseHandlerService.initialize(requestEntity);
+        return response;
 
 
 
