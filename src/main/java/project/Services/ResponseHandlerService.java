@@ -33,7 +33,8 @@ public class ResponseHandlerService {
         responseBuilderService.updateDates(responseHolder);
         FinalResponseEntity finalResponseEntity = responseBuilderService.createResponse(responseHolder, requestEntity.getWeatherHolder());
 
-        return convertObjectToJSON(finalResponseEntity);
+        String finalResponse = convertObjectToJSON(finalResponseEntity);
+        return finalResponse;
     }
 
 
@@ -69,10 +70,11 @@ public class ResponseHandlerService {
      * @return
      */
     String convertInputStreamToString(InputStream inputStream){
-        return new BufferedReader(
+        String text = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                 .lines()
                 .collect(Collectors.joining("\n"));
+        return text;
     }
 
 
