@@ -23,5 +23,6 @@ public class Timelines {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
         this.endTimeFormatted = LocalDateTime.parse(endTime.toString(), formatter);
         this.startTimeFormatted = LocalDateTime.parse(startTime.toString(), formatter);
+        this.endTime = this.endTimeFormatted + "";
     }
 }
