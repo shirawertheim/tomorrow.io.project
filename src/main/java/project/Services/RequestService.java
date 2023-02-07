@@ -79,7 +79,7 @@ public class RequestService implements InitializingBean {
         String rule = queryParams.get("rule");
         String operator = queryParams.get("operator");
 
-        logger.info("location: ", location);
+        logger.info("location: " +  location);
         logger.info("rule: " + rule);
         logger.info("operator: " + operator);
 

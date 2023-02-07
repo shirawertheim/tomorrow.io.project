@@ -29,7 +29,7 @@ public class URLController {
     public String handleURL(@RequestParam Map<String, String> queryParams) throws IOException {
 
         logger.info("");
-        logger.info("************Application started************");
+        logger.info("************ Application started ************");
         RequestEntity requestEntity = requestService.initialize(queryParams);
         String response = responseHandlerService.initialize(requestEntity);
         return response;

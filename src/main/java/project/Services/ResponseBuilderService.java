@@ -1,8 +1,10 @@
 package project.Services;
 
+import org.slf4j.Logger;
 import project.POJO.FinalResponseEntity.FinalResponseEntity;
 import project.POJO.FinalResponseEntity.FinalTimeLines;
 import project.POJO.FinalResponseEntity.data;
+import project.POJO.LoggerHelper;
 import project.POJO.ResponseAPIEntity.Intervals;
 import project.POJO.ResponseAPIEntity.ResponseHolder;
 import project.POJO.ResponseAPIEntity.Timelines;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class ResponseBuilderService {
 
+    private Logger logger = LoggerHelper.logger;
 
     /**
      * main function holds the logic
@@ -21,7 +24,8 @@ public class ResponseBuilderService {
      * @param weatherHolder
      * @return
      */
-    protected static FinalResponseEntity createResponse(ResponseHolder responseHolder, WeatherHolder weatherHolder) {
+    public FinalResponseEntity createResponse(ResponseHolder responseHolder, WeatherHolder weatherHolder) {
+        logger.info("*** ResponseBuilderService ***");
         FinalResponseEntity finalResponseEntity = new FinalResponseEntity();
         List<FinalTimeLines> list = new ArrayList<>();
         for (Timelines timelines :

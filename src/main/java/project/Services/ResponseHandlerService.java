@@ -25,6 +25,7 @@ public class ResponseHandlerService {
     private Logger logger = LoggerHelper.logger;
 
     public String initialize(RequestEntity requestEntity){
+        logger.info("*** ResponseHandlerService ***");
         InputStream inputStream = sendRequest(requestEntity.getUrl());
         String responseURL = convertInputStreamToString(inputStream);
         ResponseHolder responseHolder = createPOJO(responseURL);
