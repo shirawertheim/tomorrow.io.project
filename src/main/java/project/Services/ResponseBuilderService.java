@@ -79,7 +79,7 @@ public class ResponseBuilderService implements InitializingBean {
         }
         FinalResponseEntity finalResponseEntity = new FinalResponseEntity();
         List<FinalTimeLines> list = new ArrayList<>();
-        int counter = counterObj.getNumberOfHours();
+        int totalNumOfHours = counterObj.getNumberOfHours();
         for (Timelines timelines :
                 responseHolder.getData().getTimelines()) {
 
@@ -91,7 +91,7 @@ public class ResponseBuilderService implements InitializingBean {
             boolean prevRule = false;
             boolean firstInterval = true;
 
-            for (int i = 0; i < counter; i++) {
+            for (int i = 0; i < totalNumOfHours; i++) {
                 logger.info("" + i);
                 Intervals interval = timelines.getIntervals().get(i);
                 currStartTime = interval.getStartTime();
@@ -109,7 +109,7 @@ public class ResponseBuilderService implements InitializingBean {
 
                 currRule = legalRuleFunc(weatherHolder, interval);
 
-                if (counter == counter-1){ //final interval
+                if (i == totalNumOfHours-1){ //final interval
                     if (prevRule==currRule){
                         FinalTimeLines finalTimeline = new FinalTimeLines(firstStartTime, currEndTime, prevRule);
                         list.add(finalTimeline);
