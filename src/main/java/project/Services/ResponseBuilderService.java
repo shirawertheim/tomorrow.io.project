@@ -1,11 +1,24 @@
 package project.Services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+import project.POJO.ExceptionEntity.Types.BadRequestException;
+import project.POJO.FinalResponseEntity.Counter;
 import project.POJO.FinalResponseEntity.FinalResponseEntity;
 import project.POJO.FinalResponseEntity.FinalTimeLines;
 import project.POJO.FinalResponseEntity.data;
 import project.POJO.LoggerHelper;
+import project.POJO.RequestEntity.RequestEntity;
+import project.POJO.RequestEntity.URLRequest;
 import project.POJO.ResponseAPIEntity.Intervals;
+import project.POJO.ResponseAPIEntity.ResponseAPIHolder;
 import project.POJO.ResponseAPIEntity.ResponseHolder;
 import project.POJO.ResponseAPIEntity.Timelines;
 import project.POJO.RequestEntity.WeatherHolder;
@@ -13,10 +26,43 @@ import project.POJO.RequestEntity.WeatherCondition;
 
 import java.util.ArrayList;
 import java.util.List;
+@Service
+@Configuration
+@PropertySource("application.properties")
+public class ResponseBuilderService implements InitializingBean {
 
-public class ResponseBuilderService {
+    @Autowired
+    Environment env1;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        setDatabaseConfig();
+    }
 
     private Logger logger = LoggerHelper.logger;
+
+    private static Counter counterObj;
+
+
+
+    /**
+     * initialize URLRequest object from application.properties file
+     */
+    private void setDatabaseConfig() {
+        counterObj = new Counter();
+        counterObj.setNumberOfHours(Integer.parseInt(env1.getProperty("response.numberOfHours")));
+    }
+
+    public String initialize(ResponseAPIHolder responseAPIHolder) {
+        ResponseHolder responseHolder = responseAPIHolder.getResponseHolder();
+        RequestEntity requestEntity = responseAPIHolder.getRequestEntity();
+        updateDates(responseHolder);
+        FinalResponseEntity finalResponseEntity = createResponse(responseHolder, requestEntity.getWeatherHolder());
+
+        String finalResponse = convertObjectToJSON(finalResponseEntity);
+        return finalResponse;
+    }
+
 
     /**
      * main function holds the logic
@@ -26,9 +72,14 @@ public class ResponseBuilderService {
      */
     public FinalResponseEntity createResponse(ResponseHolder responseHolder, WeatherHolder weatherHolder) {
         logger.info("*** ResponseBuilderService ***");
+        try {
+            afterPropertiesSet();
+        } catch (Exception e) {
+            throw new BadRequestException("Couldn't find the property of counter");
+        }
         FinalResponseEntity finalResponseEntity = new FinalResponseEntity();
         List<FinalTimeLines> list = new ArrayList<>();
-        int counter72hours = 72; //todo
+        int counter = counterObj.getNumberOfHours();
         for (Timelines timelines :
                 responseHolder.getData().getTimelines()) {
 
@@ -40,7 +91,7 @@ public class ResponseBuilderService {
             boolean prevRule = false;
             boolean firstInterval = true;
 
-            for (int i = 0; i < counter72hours; i++) {
+            for (int i = 0; i < counter; i++) {
                 logger.info("" + i);
                 Intervals interval = timelines.getIntervals().get(i);
                 currStartTime = interval.getStartTime();
@@ -58,7 +109,7 @@ public class ResponseBuilderService {
 
                 currRule = legalRuleFunc(weatherHolder, interval);
 
-                if (counter72hours == counter72hours-1){ //final interval
+                if (counter == counter-1){ //final interval
                     if (prevRule==currRule){
                         FinalTimeLines finalTimeline = new FinalTimeLines(firstStartTime, currEndTime, prevRule);
                         list.add(finalTimeline);
@@ -137,5 +188,24 @@ public class ResponseBuilderService {
         }
 
     }
+
+
+    /**
+     * convert the FinalResponseEntity to JSON
+     * @param finalResponseEntity
+     */
+    private String convertObjectToJSON(FinalResponseEntity finalResponseEntity) {
+        ObjectMapper mapper = new ObjectMapper();
+        //Converting the Object to JSONString
+        try {
+            String jsonString = mapper.writeValueAsString(finalResponseEntity);
+            logger.info("jsonString: ", jsonString);
+            logger.info(jsonString);
+            return jsonString;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class FinalResponseEntity {
     private String status = "success";
     private data data = new data();
+
 }

@@ -6,6 +6,7 @@ import project.POJO.ExceptionEntity.Types.ServiceErrorException;
 import project.POJO.FinalResponseEntity.FinalResponseEntity;
 import project.POJO.LoggerHelper;
 import project.POJO.RequestEntity.RequestEntity;
+import project.POJO.ResponseAPIEntity.ResponseAPIHolder;
 import project.POJO.ResponseAPIEntity.ResponseHolder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,17 +25,13 @@ public class ResponseHandlerService {
 
     private Logger logger = LoggerHelper.logger;
 
-    public String initialize(RequestEntity requestEntity){
+    public ResponseAPIHolder initialize(RequestEntity requestEntity){
         logger.info("*** ResponseHandlerService ***");
         InputStream inputStream = sendRequest(requestEntity.getUrl());
         String responseURL = convertInputStreamToString(inputStream);
         ResponseHolder responseHolder = createPOJO(responseURL);
-        ResponseBuilderService responseBuilderService = new ResponseBuilderService();
-        responseBuilderService.updateDates(responseHolder);
-        FinalResponseEntity finalResponseEntity = responseBuilderService.createResponse(responseHolder, requestEntity.getWeatherHolder());
-
-        String finalResponse = convertObjectToJSON(finalResponseEntity);
-        return finalResponse;
+        ResponseAPIHolder responseAPIHolder = new ResponseAPIHolder(responseHolder, requestEntity);
+        return responseAPIHolder;
     }
 
 
@@ -95,21 +92,6 @@ public class ResponseHandlerService {
     }
 
 
-    /**
-     * convert the FinalResponseEntity to JSON
-     * @param finalResponseEntity
-     */
-    private String convertObjectToJSON(FinalResponseEntity finalResponseEntity) {
-        ObjectMapper mapper = new ObjectMapper();
-        //Converting the Object to JSONString
-        try {
-            String jsonString = mapper.writeValueAsString(finalResponseEntity);
-            logger.info("jsonString: ", jsonString);
-            logger.info(jsonString);
-            return jsonString;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
 }
