@@ -19,7 +19,7 @@ public class Intervals {
     public void updateDate(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
         this.startTimeFormatted = LocalDateTime.parse(startTime, formatter);
-        LocalDateTime endTimeFormatted = startTimeFormatted.plusHours(72);
+        LocalDateTime endTimeFormatted = startTimeFormatted.plusHours(1);
         this.endTime = endTimeFormatted + "";
     }
 }

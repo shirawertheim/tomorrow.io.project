@@ -28,48 +28,66 @@ public class ResponseBuilderService {
         logger.info("*** ResponseBuilderService ***");
         FinalResponseEntity finalResponseEntity = new FinalResponseEntity();
         List<FinalTimeLines> list = new ArrayList<>();
+        int counter72hours = 72; //todo
         for (Timelines timelines :
                 responseHolder.getData().getTimelines()) {
 
             String firstStartTime = null;
             String currStartTime;
             String currEndTime;
+            String prevEndTime = null;
             boolean currRule;
             boolean prevRule = false;
             boolean firstInterval = true;
 
-            String finalStartTime = null, finalEndTime = null;
-            boolean finalRule = false;
-            for(Intervals interval : timelines.getIntervals()){
-
+            for (int i = 0; i < counter72hours; i++) {
+                logger.info("" + i);
+                Intervals interval = timelines.getIntervals().get(i);
                 currStartTime = interval.getStartTime();
                 currEndTime = interval.getEndTime();
+
+                logger.info("currStartTime" + currStartTime);
 
                 if (firstInterval){ //first time initialized
                     firstStartTime = currStartTime;
                     prevRule = legalRuleFunc(weatherHolder, interval);
                     firstInterval = false;
+                    prevEndTime = currEndTime;
                     continue;
                 }
 
                 currRule = legalRuleFunc(weatherHolder, interval);
 
-                if (prevRule!=currRule){
-                    FinalTimeLines finalTimeline = new FinalTimeLines(firstStartTime, currEndTime, currRule);
-                    list.add(finalTimeline);
-                    firstStartTime = currStartTime;
+                if (counter72hours == counter72hours-1){ //final interval
+                    if (prevRule==currRule){
+                        FinalTimeLines finalTimeline = new FinalTimeLines(firstStartTime, currEndTime, prevRule);
+                        list.add(finalTimeline);
+                    }
+                    else{
+                        //prev finalTimeLine
+                        FinalTimeLines finalTimeline = new FinalTimeLines(firstStartTime, prevEndTime, prevRule);
+                        list.add(finalTimeline);
+
+                        //curr finalTimeLine
+                        FinalTimeLines finalTimeline1 = new FinalTimeLines(currStartTime, currEndTime, currRule);
+                        list.add(finalTimeline1);
+                    }
+                }
+                else { //not final interval
+                    if (prevRule != currRule) {
+                        FinalTimeLines finalTimeline = new FinalTimeLines(firstStartTime, prevEndTime, prevRule);
+                        list.add(finalTimeline);
+                        firstStartTime = currStartTime;
+                    }
                 }
 
                 prevRule = currRule;
+                prevEndTime = currEndTime;
 
-                finalStartTime = firstStartTime;
-                finalEndTime = currEndTime;
-                finalRule = currRule;
+
             }
-            FinalTimeLines finalTimeline = new FinalTimeLines(finalStartTime, finalEndTime, finalRule);
-            list.add(finalTimeline);
-            data data = new data(list);
 
+            data data = new data(list);
             finalResponseEntity.setData(data);
         }
 
