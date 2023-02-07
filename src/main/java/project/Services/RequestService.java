@@ -72,7 +72,7 @@ public class RequestService implements InitializingBean {
         try {
             afterPropertiesSet();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException("Wasn't able to load the URLRequest object");
         }
 
         String location = queryParams.get("location");

@@ -14,10 +14,5 @@ public class Humidity extends WeatherCondition {
         super("humidity", exists, operator, value);
     }
 
-//    public Humidity(String operator, boolean exists, int value)
-//    {
-//        super(exists, operator, value);
-//        name = ruleName;
-//    }
 
 }
