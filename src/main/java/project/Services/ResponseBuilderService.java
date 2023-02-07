@@ -41,7 +41,7 @@ public class ResponseBuilderService implements InitializingBean {
 
     private Logger logger = LoggerHelper.logger;
 
-    private static Counter counterObj;
+    private Counter counterObj;
 
 
 
@@ -143,7 +143,7 @@ public class ResponseBuilderService implements InitializingBean {
 
     }
 
-    private static boolean legalRuleFunc(WeatherHolder weatherHolder, Intervals interval) {
+    private boolean legalRuleFunc(WeatherHolder weatherHolder, Intervals interval) {
         String totalOperator = weatherHolder.getTotalOperator();
         if (totalOperator.equals("OR")){
             return checkORLLegality(weatherHolder, interval);
@@ -153,7 +153,7 @@ public class ResponseBuilderService implements InitializingBean {
         }
     }
 
-    private static boolean checkANDELegality(WeatherHolder weatherHolder, Intervals interval) {
+    private boolean checkANDELegality(WeatherHolder weatherHolder, Intervals interval) {
         for (WeatherCondition weatherCondition : weatherHolder.getSet()){
             String weatherRuleName = weatherCondition.getName();
             long value = interval.getValues().getValuesMap().get(weatherRuleName);
@@ -163,7 +163,7 @@ public class ResponseBuilderService implements InitializingBean {
         return true;
     }
 
-    private static boolean checkORLLegality(WeatherHolder weatherHolder, Intervals interval) {
+    private boolean checkORLLegality(WeatherHolder weatherHolder, Intervals interval) {
         for (WeatherCondition weatherCondition : weatherHolder.getSet()){
             String weatherRuleName = weatherCondition.getName();
             long value = interval.getValues().getValuesMap().get(weatherRuleName);
@@ -174,7 +174,7 @@ public class ResponseBuilderService implements InitializingBean {
     }
 
 
-    protected static void updateDates(ResponseHolder responseHolder) {
+    protected void updateDates(ResponseHolder responseHolder) {
         for (Timelines timelines :
                 responseHolder.getData().getTimelines()) {
             timelines.updateDate();
@@ -196,7 +196,7 @@ public class ResponseBuilderService implements InitializingBean {
         //Converting the Object to JSONString
         try {
             String jsonString = mapper.writeValueAsString(finalResponseEntity);
-            logger.info("jsonString: ", jsonString);
+            logger.info("Response: ", jsonString);
             logger.info(jsonString);
             return jsonString;
         } catch (JsonProcessingException e) {

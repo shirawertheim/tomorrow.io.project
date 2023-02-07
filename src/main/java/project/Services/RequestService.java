@@ -33,8 +33,8 @@ public class RequestService implements InitializingBean {
         setDatabaseConfig();
     }
 
-    private static URLRequest urlRequest;
-    final static WeatherHolder weatherHolder = new WeatherHolder();
+    private URLRequest urlRequest;
+    private WeatherHolder weatherHolder;
     private Logger logger = LoggerHelper.logger;
 
     /**
@@ -58,7 +58,7 @@ public class RequestService implements InitializingBean {
      */
     @GetMapping
     public RequestEntity initialize(Map<String, String> queryParams) {
-
+        weatherHolder = new WeatherHolder();
         logger.info("*** RequestService ***");
         try {
             afterPropertiesSet();
@@ -97,7 +97,7 @@ public class RequestService implements InitializingBean {
      * initialize location part, throw exception if not legal
      * @param s
      */
-    private static void handleFirstPartLocations(String s) {
+    private void handleFirstPartLocations(String s) {
         try {
             String[] location = s.split(",");
             String lat = location[0];
@@ -139,7 +139,7 @@ public class RequestService implements InitializingBean {
      * @param rule
      * @return
      */
-    private static String operatorInitializer(String rule) {
+    private String operatorInitializer(String rule) {
         String ruleOperator = null;
         if (rule.contains(">")){
             ruleOperator = ">";
