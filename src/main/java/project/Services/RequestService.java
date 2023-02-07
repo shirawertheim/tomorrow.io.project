@@ -24,6 +24,9 @@ import java.util.Map;
 @PropertySource("application.properties")
 public class RequestService implements InitializingBean {
 
+    private URLRequest urlRequest;
+    private WeatherHolder weatherHolder;
+    private Logger logger = LoggerHelper.logger;
 
     @Autowired
     Environment env;
@@ -33,12 +36,10 @@ public class RequestService implements InitializingBean {
         setDatabaseConfig();
     }
 
-    private URLRequest urlRequest;
-    private WeatherHolder weatherHolder;
-    private Logger logger = LoggerHelper.logger;
+
 
     /**
-     * initialize URLRequest object from application.properties fille
+     * initialize URLRequest object from application.properties file
      */
     private void setDatabaseConfig() {
         urlRequest = new URLRequest();
@@ -82,9 +83,9 @@ public class RequestService implements InitializingBean {
         }
 
 
-        handleFirstPartLocations(location);
-        handleSecondPart(rule);
-        handleThirdPart(operator);
+        handleLocation(location);
+        handleConditions(rule);
+        handleOperator(operator);
 
         String url = urlRequest.buildURL(weatherHolder);
         RequestEntity requestEntity = new RequestEntity(url, weatherHolder);
@@ -94,10 +95,10 @@ public class RequestService implements InitializingBean {
 
 
     /**
-     * initialize location part, throw exception if not legal
+     * initialize location, throw exception illegal location
      * @param s
      */
-    private void handleFirstPartLocations(String s) {
+    private void handleLocation(String s) {
         try {
             String[] location = s.split(",");
             String lat = location[0];
@@ -114,17 +115,17 @@ public class RequestService implements InitializingBean {
 
 
     /**
-     * initialize conditions part, throw exception if not legal
+     * initialize conditions part, throw exception illegal conditions
      * @param s
      */
-    private void handleSecondPart(String s) {
+    private void handleConditions(String s) {
 
         String[] rules = s.split(",");
 
         for (String rule : rules){
             String ruleOperator = operatorInitializer(rule);
             String[] currRule = rule.split(ruleOperator);
-            int value =  Integer.valueOf(currRule[1]);
+            int value =  Integer.parseInt(currRule[1]);
             String ruleName = currRule[0];
             boolean exists = weatherHolder.getRuleNames().contains(ruleName);
             if (exists){
@@ -135,7 +136,7 @@ public class RequestService implements InitializingBean {
     }
 
     /**
-     * helper function, check operator equals ">" or "<"
+     * checks operator equals ">" or "<"
      * @param rule
      * @return
      */
@@ -154,10 +155,10 @@ public class RequestService implements InitializingBean {
     }
 
     /**
-     * initialize OPERATOR part, throw exception if not legal
+     * initialize OPERATOR part, throws illegal
      * @param s
      */
-    private void handleThirdPart(String s) {
+    private void handleOperator(String s) {
         if (s.equals("OR") || s.equals("AND")){
             weatherHolder.setTotalOperator(s);
         }

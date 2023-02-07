@@ -9,7 +9,6 @@ public class URLRequest {
 
     private String tomorrowURL;
     private String apiKey;
-
     private String fields;
     private String timesteps;
     private String units;

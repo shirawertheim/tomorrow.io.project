@@ -1,13 +1,11 @@
 package project.POJO.FinalResponseEntity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
 @Setter
-public class Counter {
+public class NumberOfHours {
     private int numberOfHours;
 
 }

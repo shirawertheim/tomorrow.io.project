@@ -10,19 +10,18 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import project.POJO.ExceptionEntity.Types.BadRequestException;
-import project.POJO.FinalResponseEntity.Counter;
+import project.POJO.FinalResponseEntity.NumberOfHours;
 import project.POJO.FinalResponseEntity.FinalResponseEntity;
 import project.POJO.FinalResponseEntity.FinalTimeLines;
 import project.POJO.FinalResponseEntity.data;
 import project.POJO.LoggerHelper;
 import project.POJO.RequestEntity.RequestEntity;
-import project.POJO.RequestEntity.URLRequest;
+import project.POJO.RequestEntity.WeatherCondition;
+import project.POJO.RequestEntity.WeatherHolder;
 import project.POJO.ResponseAPIEntity.Intervals;
 import project.POJO.ResponseAPIEntity.ResponseAPIHolder;
 import project.POJO.ResponseAPIEntity.ResponseHolder;
 import project.POJO.ResponseAPIEntity.Timelines;
-import project.POJO.RequestEntity.WeatherHolder;
-import project.POJO.RequestEntity.WeatherCondition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +34,13 @@ public class ResponseBuilderService implements InitializingBean {
     Environment env1;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         setDatabaseConfig();
     }
 
     private Logger logger = LoggerHelper.logger;
 
-    private Counter counterObj;
+    private NumberOfHours numberOfHoursObj;
 
 
 
@@ -49,8 +48,8 @@ public class ResponseBuilderService implements InitializingBean {
      * initialize URLRequest object from application.properties file
      */
     private void setDatabaseConfig() {
-        counterObj = new Counter();
-        counterObj.setNumberOfHours(Integer.parseInt(env1.getProperty("response.numberOfHours")));
+        numberOfHoursObj = new NumberOfHours();
+        numberOfHoursObj.setNumberOfHours(Integer.parseInt(env1.getProperty("response.numberOfHours")));
     }
 
     public String initialize(ResponseAPIHolder responseAPIHolder) {
@@ -79,7 +78,7 @@ public class ResponseBuilderService implements InitializingBean {
         }
         FinalResponseEntity finalResponseEntity = new FinalResponseEntity();
         List<FinalTimeLines> list = new ArrayList<>();
-        int totalNumOfHours = counterObj.getNumberOfHours();
+        int totalNumOfHours = numberOfHoursObj.getNumberOfHours();
         for (Timelines timelines :
                 responseHolder.getData().getTimelines()) {
 
@@ -131,8 +130,6 @@ public class ResponseBuilderService implements InitializingBean {
 
                 prevRule = currRule;
                 prevEndTime = currEndTime;
-
-
             }
 
             data data = new data(list);
@@ -148,7 +145,7 @@ public class ResponseBuilderService implements InitializingBean {
         if (totalOperator.equals("OR")){
             return checkORLLegality(weatherHolder, interval);
         }
-        else{
+        else{ //AND operator
             return checkANDELegality(weatherHolder, interval);
         }
     }
@@ -200,7 +197,7 @@ public class ResponseBuilderService implements InitializingBean {
             logger.info(jsonString);
             return jsonString;
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new BadRequestException("Invalid response");
         }
     }
 

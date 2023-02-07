@@ -1,19 +1,21 @@
 package project.Services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import project.POJO.ExceptionEntity.Types.NotFoundException;
 import project.POJO.ExceptionEntity.Types.ServiceErrorException;
-import project.POJO.FinalResponseEntity.FinalResponseEntity;
 import project.POJO.LoggerHelper;
 import project.POJO.RequestEntity.RequestEntity;
 import project.POJO.ResponseAPIEntity.ResponseAPIHolder;
 import project.POJO.ResponseAPIEntity.ResponseHolder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,7 +40,7 @@ public class ResponseHandlerService {
     /**
      * Send the URL to tomorrow.io API
      * @param urlInput
-     * @return inputstream
+     * @return input stream
      */
     @GetMapping
     public InputStream sendRequest(String urlInput){
