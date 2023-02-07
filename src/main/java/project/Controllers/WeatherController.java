@@ -2,7 +2,6 @@ package project.Controllers;
 
 import project.POJO.LoggerHelper;
 import project.POJO.ResponseAPIEntity.ResponseAPIHolder;
-import project.POJO.ResponseAPIEntity.ResponseHolder;
 import project.Services.RequestService;
 import project.POJO.RequestEntity.RequestEntity;
 import project.Services.ResponseBuilderService;
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-public class URLController {
+public class WeatherController {
 
     RequestService requestService;
     ResponseHandlerService responseHandlerService;
@@ -24,7 +23,7 @@ public class URLController {
 
 
     @Autowired
-    public URLController(RequestService requestService, ResponseHandlerService responseHandlerService, ResponseBuilderService responseBuilderService) {
+    public WeatherController(RequestService requestService, ResponseHandlerService responseHandlerService, ResponseBuilderService responseBuilderService) {
         this.requestService = requestService;
         this.responseHandlerService = responseHandlerService;
         this.responseBuilderService = responseBuilderService;

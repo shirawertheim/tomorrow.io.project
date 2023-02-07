@@ -92,12 +92,9 @@ public class ResponseBuilderService implements InitializingBean {
             boolean firstInterval = true;
 
             for (int i = 0; i < totalNumOfHours; i++) {
-                logger.info("" + i);
                 Intervals interval = timelines.getIntervals().get(i);
                 currStartTime = interval.getStartTime();
                 currEndTime = interval.getEndTime();
-
-                logger.info("currStartTime" + currStartTime);
 
                 if (firstInterval){ //first time initialized
                     firstStartTime = currStartTime;

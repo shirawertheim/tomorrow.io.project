@@ -18,14 +18,6 @@ import project.POJO.RequestEntity.WeatherHolder;
 
 import java.util.Map;
 
-/**
- * GETURL example:
- GET/weather-conditions?location=40.7,-73.9&rule=temperature>30,wind<10,visibility>4&operator=OR
-
- * requestURL example:
- * 'https://api.tomorrow.io/v4/timelines?location=40.75872069597532,-73.98529171943665&fields=temperature&timesteps=1h&units=metric&apikey=fvFU2JQBMP1QX7MeW44ghUQnNiy97uX6
- */
-
 
 @Service
 @Configuration
@@ -50,7 +42,6 @@ public class RequestService implements InitializingBean {
      */
     private void setDatabaseConfig() {
         urlRequest = new URLRequest();
-        urlRequest.setPrefix(env.getProperty("url.prefix"));
         urlRequest.setTomorrowURL(env.getProperty("url.tomorrowURL"));
         urlRequest.setApiKey(env.getProperty("url.apiKey"));
         urlRequest.setFields(env.getProperty("url.fields"));
@@ -75,13 +66,20 @@ public class RequestService implements InitializingBean {
             throw new BadRequestException("Wasn't able to load the URLRequest object");
         }
 
-        String location = queryParams.get("location");
-        String rule = queryParams.get("rule");
-        String operator = queryParams.get("operator");
+        String location = null, rule = null, operator = null;
 
-        logger.info("location: " +  location);
-        logger.info("rule: " + rule);
-        logger.info("operator: " + operator);
+        try {
+            location = queryParams.get("location");
+            rule = queryParams.get("rule");
+            operator = queryParams.get("operator");
+            logger.info("location: " +  location);
+            logger.info("rule: " + rule);
+            logger.info("operator: " + operator);
+
+        }
+        catch (Exception e){
+            logger.info("location/rule/operator are illegal. Please check");
+        }
 
 
         handleFirstPartLocations(location);
@@ -109,17 +107,17 @@ public class RequestService implements InitializingBean {
             weatherHolder.setLen(lon);
         }
         catch (Exception e){
-            throw new BadRequestException("Invalid operator provided, please use lat,lon structure");
+            throw new BadRequestException("Invalid location provided, please use lat,lon structure");
         }
     }
 
 
 
     /**
-     * initialize rules part, throw exception if not legal
+     * initialize conditions part, throw exception if not legal
      * @param s
      */
-    private static String handleSecondPart(String s) {
+    private void handleSecondPart(String s) {
 
         String[] rules = s.split(",");
 
@@ -134,7 +132,6 @@ public class RequestService implements InitializingBean {
                 weatherHolder.getSet().add(weatherCondition);
             }
         }
-        return null;
     }
 
     /**
@@ -160,7 +157,7 @@ public class RequestService implements InitializingBean {
      * initialize OPERATOR part, throw exception if not legal
      * @param s
      */
-    private static void handleThirdPart(String s) {
+    private void handleThirdPart(String s) {
         if (s.equals("OR") || s.equals("AND")){
             weatherHolder.setTotalOperator(s);
         }

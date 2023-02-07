@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class URLRequest {
 
-    private String prefix;
     private String tomorrowURL;
     private String apiKey;
 
