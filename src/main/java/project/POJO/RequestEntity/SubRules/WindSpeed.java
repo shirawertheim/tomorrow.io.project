@@ -1,8 +1,8 @@
-package com.example.demo.pojo;
+package project.POJO.RequestEntity.SubRules;
 
-import lombok.Data;
+import project.POJO.RequestEntity.WeatherCondition;
 
-public class WindSpeed extends WeatherRule{
+public class WindSpeed extends WeatherCondition {
 
     public WindSpeed(){
         this.name = "windSpeed";
